@@ -15,13 +15,29 @@
         var peer = new Peer({ key: '3beb9648-51be-4a9e-8fb6-cb2e4f18757d', debug: 3});
         peer.on('open', function(){
             $('#my-id').text(peer.id);
+
+            // callstats
+            var callStats = new callstats($,io,jsSHA);
+            console.log("CallStats version: %o",callStats.version);
+
+            //initialize the app with application tokens
+            var AppID     = "455879527";
+            var AppSecret = "HQ6q9yjapRBCr9BMOMv6wsXlf9g=";
+
+            function initCallback (err, msg) {
+                console.log("Initializing Status: err="+err+" msg="+msg);
+            }
+
+            //userID is generated or given by the origin server
+            callStats.initialize(AppID, AppSecret, peer.id, initCallback,function(cb){
+                console.log(cb);
+            });
+
         });
         // Receiving a call
         peer.on('call', function(call){
             var usage = callStats.fabricUsage.multiplex;
-            callStats.addNewFabric(peer, call.peer, usage, 'test', function(cb){
-                console.log(cb);
-            });
+            callStats.addNewFabric(peer, call.peer, usage);
             // Answer the call automatically (instead of prompting user) for demo purposes
             call.answer(window.localStream);
             step3(call);
@@ -31,24 +47,6 @@
             // Return to step 2 if error occurs
             step2();
         });
-
-        // callstats
-        var callStats = new callstats($,io,jsSHA);
-        console.log("CallStats version: %o",callStats.version);
-
-        //initialize the app with application tokens
-        var AppID     = "455879527";
-        var AppSecret = "HQ6q9yjapRBCr9BMOMv6wsXlf9g=";
-
-        function initCallback (err, msg) {
-            console.log("Initializing Status: err="+err+" msg="+msg);
-        }
-
-        //userID is generated or given by the origin server
-        callStats.initialize(AppID, AppSecret, peer.id, initCallback, function(cb){
-            console.log(cb);
-        });
-
 
         // Click handlers setup
         $(function(){
