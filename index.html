@@ -18,6 +18,10 @@
         });
         // Receiving a call
         peer.on('call', function(call){
+            var usage = callStats.fabricUsage.multiplex;
+            callStats.addNewFabric(peer, call.peer, usage, 'test', function(cb){
+                console.log(cb);
+            });
             // Answer the call automatically (instead of prompting user) for demo purposes
             call.answer(window.localStream);
             step3(call);
@@ -41,7 +45,7 @@
         }
 
         //userID is generated or given by the origin server
-        callStats.initialize(AppID, AppSecret, 'test1', initCallback, function(cb){
+        callStats.initialize(AppID, AppSecret, peer.id, initCallback, function(cb){
             console.log(cb);
         });
 
