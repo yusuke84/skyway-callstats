@@ -18,7 +18,7 @@
             $('#my-id').text(peer.id);
 
             // callstats
-            Window.callStats = new callstats($,io,jsSHA);
+            callStats = new callstats($,io,jsSHA);
             console.log("CallStats version: %o",callStats.version);
 
             //initialize the app with application tokens
