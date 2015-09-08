@@ -574,8 +574,8 @@
         if (util.supports.onnegotiationneeded) {
             util.log('Listening for `negotiationneeded`');
             pc.onnegotiationneeded = function() {
-                var usage = window.callStats.fabricUsage.multiplex;
-                window.callStats.addNewFabric(pc, peerid, usage, confID, function(cb){
+                var usage = Window.callStats.fabricUsage.multiplex;
+                Window.callStats.addNewFabric(pc, peerId, usage, null, function(cb){
                     console.log("callstats:"+cb);
                 });
                 util.log('`negotiationneeded` triggered');
